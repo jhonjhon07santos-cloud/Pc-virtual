@@ -1,0 +1,55 @@
+name: PC Virtual
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pc-virtual:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Atualizar sistema
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+
+      - name: Instalar ambiente gráfico XFCE
+        run: |
+          sudo apt install -y \
+            xfce4 \
+            xfce4-goodies \
+            xrdp \
+            firefox \
+            xfce4-terminal
+
+      - name: Configurar XFCE
+        run: |
+          echo "startxfce4" > ~/.xsession
+          chmod +x ~/.xsession
+
+      - name: Ver informações do computador
+        run: |
+          echo "===== PC VIRTUAL ====="
+          echo "Sistema:"
+          lsb_release -a || true
+          echo
+          echo "CPU:"
+          nproc
+          echo
+          echo "Memória:"
+          free -h
+          echo
+          echo "Disco:"
+          df -h /
+          echo
+          echo "Kernel:"
+          uname -a
+
+      - name: Testar ambiente gráfico
+        run: |
+          echo "XFCE instalado com sucesso."
+          echo "O runner será encerrado automaticamente ao finalizar o workflow."
+
+      - name: Finalizar
+        run: |
+          echo "PC virtual configurado."
